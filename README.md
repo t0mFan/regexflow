@@ -2,6 +2,20 @@
 
 A Django + React application that imports CSV/XLSX from a user's own Amazon S3 bucket and edits the table through **one conversation box**. The model sees bounded table samples and the user's instruction, chooses columns and a multi-step editing plan, then Celery/PySpark executes the validated plan. Ambiguous requests ask a follow-up question without changing data.
 
+## Live application
+
+**[Open the deployed RegexFlow application](https://regexflow.3.26.29.195.sslip.io/)**
+
+The application runs on AWS EC2 in Sydney with HTTPS. Connect your own S3 bucket to import CSV/XLSX files; the interface uses the configured Groq provider for conversational edits. The address depends on the current server IP and must be updated if that IP changes.
+
+## Demonstration video
+
+[![Watch the RegexFlow demonstration](docs/demo/preview.jpg)](docs/demo/regexflow-demo.mp4)
+
+**[Watch or download the MP4](docs/demo/regexflow-demo.mp4)** · [English captions](docs/demo/captions.vtt) · [Recording notes and chapters](docs/demo/README.md)
+
+Recorded against the live deployment on 18 October 2026, using a real S3 CSV with three synthetic records. The video demonstrates file selection, asynchronous import and progress, pagination, regex email-domain replacement, uppercase normalization, first-name extraction, a request for missing category rules, and original/result comparison. It includes English captions and narration. AWS credential entry is omitted, and waiting periods are edited for brevity. A repeated AI-generated domain rule and its no-match warning are shown and explained. Click the image or MP4 link to open the recording; GitHub may offer a download rather than an inline player.
+
 ## Current interaction
 
 1. Connect S3 and import a CSV/XLSX, or load the synthetic demo table.
@@ -133,7 +147,7 @@ Use `GET /api/bootstrap/` first and send its CSRF token as `X-CSRFToken` with th
 
 ## Delivery status
 
-The local stack, automated tests, core benchmarks and provider integration have been exercised. Verification JSON files state the exact checks and scope. Real S3 listing and import were verified locally with `s3-test.csv` (three rows, three columns). A GitHub upload, public deployment and final recorded cloud demonstration remain outside the agreed local delivery stage. Before exposing publicly, add account authentication, HTTPS/secure cookies, a durable broker/recovery process, retention and capacity controls, and keep infrastructure/Flower private.
+The repository is hosted on GitHub, and the public HTTPS application and recorded cloud demonstration are linked above. Real S3 listing/import and conversational edits were exercised on the live deployment with `s3-test.csv` (three rows, three columns). The local stack, automated tests, core benchmarks and provider integration were also exercised; existing verification JSON files state their exact scope and do not constitute a fresh test of every deployment revision. The hosted version uses HTTPS and secure cookies. Account authentication, durable broker/recovery, automatic retention and capacity controls remain operational improvements before broader production use. Keep infrastructure and Flower private.
 
 Official references: [Groq structured outputs](https://console.groq.com/docs/structured-outputs), [Groq limits](https://console.groq.com/docs/rate-limits), [Spark](https://spark.apache.org/docs/3.5.6/rdd-programming-guide.html), [Celery tasks](https://docs.celeryq.dev/en/stable/userguide/tasks.html).
 

@@ -1,0 +1,44 @@
+[
+  {
+    "chapter": "01 \u00b7 Live deployment",
+    "start": 0,
+    "duration": 10.4,
+    "narration": "Welcome to RegexFlow, the AI table assistant. This demonstration uses the deployed HTTPS application and a real Amazon S3 bucket."
+  },
+  {
+    "chapter": "02 \u00b7 Connect your S3 bucket",
+    "start": 10.4,
+    "duration": 12.0,
+    "narration": "Connect your own S3 bucket using the connection dialog. Credential entry was completed privately and is omitted from this recording. The application lists the actual supported files in the bucket."
+  },
+  {
+    "chapter": "03 \u00b7 Import a real S3 file",
+    "start": 22.4,
+    "duration": 19.6,
+    "narration": "Select the test CSV and click Import file. The import runs asynchronously through Celery and Spark, with progress visible in the browser. Once complete, the table has three rows and three columns. Pagination lets us inspect the remaining row. Waiting periods in this demonstration are edited for brevity."
+  },
+  {
+    "chapter": "04 \u00b7 Regex replacement",
+    "start": 42.0,
+    "duration": 20.400000000000002,
+    "narration": "Use one conversation box to describe a regex replacement. Here we replace example dot com with demo dot org in the Email column, preserving names and notes. The assistant plans the operation, and the background worker applies the validated rule to the table."
+  },
+  {
+    "chapter": "05 \u00b7 Chain table edits",
+    "start": 62.400000000000006,
+    "duration": 25.6,
+    "narration": "Next, ask for uppercase names and a new First Name column containing the first word. The new edit starts from the current result, so the updated email domain is retained. The model also repeated the previous domain rule. Because those values were already changed, the interface reports a no-match warning for that additional step. All three records have the requested names and extracted values."
+  },
+  {
+    "chapter": "06 \u00b7 Clarify before changing data",
+    "start": 88.0,
+    "duration": 15.200000000000001,
+    "narration": "Here we request category updates without providing the mapping rules, and explicitly ask for clarification first. The assistant asks which rules to use, reports that clarification is needed, and preserves the last successful table."
+  },
+  {
+    "chapter": "07 \u00b7 Preserve the original",
+    "start": 103.2,
+    "duration": 18.0,
+    "narration": "Finally, compare the result with the original table. The original names and email addresses remain available, and the S3 source object is not overwritten. RegexFlow combines real S3 import, conversational planning, asynchronous processing, and paginated results."
+  }
+]
