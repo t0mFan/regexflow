@@ -1,0 +1,100 @@
+name: regexflow
+x-app: &app
+  build: ./backend
+  image: regexflow-backend:local
+  env_file: .env
+  environment: &env
+    POSTGRES_HOST: postgres
+    POSTGRES_DB: regexflow
+    POSTGRES_USER: regexflow
+    REDIS_URL: redis://redis:6379/0
+    DATA_ROOT: /data
+    SPARK_MASTER: spark://spark-master:7077
+    SPARK_DRIVER_HOST: worker
+    SPARK_DRIVER_BIND: 0.0.0.0
+    SPARK_PARTITIONS: 8
+    PYSPARK_PYTHON: /usr/local/bin/python
+    SPARK_LOCAL_IP: 0.0.0.0
+  volumes:
+    - data:/data
+  depends_on:
+    postgres: {condition: service_healthy}
+    redis: {condition: service_healthy}
+  restart: unless-stopped
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: regexflow
+      POSTGRES_USER: regexflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/configure.py first}
+    volumes: [postgres:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U regexflow]
+      interval: 5s
+      retries: 12
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    command: [redis-server, --save, '', --appendonly, 'no', --maxmemory, 256mb, --maxmemory-policy, noeviction]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      retries: 12
+    restart: unless-stopped
+  migrate:
+    <<: *app
+    command: python manage.py migrate --noinput
+    restart: 'no'
+  backend:
+    <<: *app
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 2 --timeout 90 --access-logfile -
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, curl, -f, http://localhost:8000/api/health/]
+      interval: 10s
+      retries: 12
+  worker:
+    <<: *app
+    command: celery -A config worker --loglevel=INFO --pool=prefork --concurrency=1
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      spark-master: {condition: service_started}
+      spark-worker-1: {condition: service_started}
+      spark-worker-2: {condition: service_started}
+      redis: {condition: service_healthy}
+  spark-master:
+    <<: *app
+    command: /usr/local/lib/python3.12/site-packages/pyspark/bin/spark-class org.apache.spark.deploy.master.Master --host spark-master --port 7077 --webui-port 8081
+    environment:
+      SPARK_LOCAL_IP: spark-master
+    depends_on: {}
+  spark-worker-1:
+    <<: *app
+    command: /usr/local/lib/python3.12/site-packages/pyspark/bin/spark-class org.apache.spark.deploy.worker.Worker --cores 1 --memory 1G spark://spark-master:7077
+    environment:
+      SPARK_LOCAL_IP: spark-worker-1
+    depends_on: [spark-master]
+  spark-worker-2:
+    <<: *app
+    command: /usr/local/lib/python3.12/site-packages/pyspark/bin/spark-class org.apache.spark.deploy.worker.Worker --cores 1 --memory 1G spark://spark-master:7077
+    environment:
+      SPARK_LOCAL_IP: spark-worker-2
+    depends_on: [spark-master]
+  frontend:
+    build: ./frontend
+    ports: [127.0.0.1:8080:80]
+    depends_on:
+      backend: {condition: service_healthy}
+    restart: unless-stopped
+  flower:
+    <<: *app
+    command: celery -A config flower --port=5555
+    ports: [127.0.0.1:5555:5555]
+    depends_on:
+      redis: {condition: service_healthy}
+volumes:
+  postgres:
+  data:

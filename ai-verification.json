@@ -1,0 +1,11 @@
+{
+  "name_extraction": "PASS",
+  "zero_match_guard": "PASS",
+  "provider": "groq",
+  "live_requests": "PASS",
+  "regex_replacement": "PASS",
+  "extraction": "PASS",
+  "normalization": "PASS",
+  "cache": "PASS",
+  "data": "synthetic examples only"
+}

@@ -1,0 +1,14 @@
+{
+  "unified_prompt": "PASS",
+  "sample_context": "PASS",
+  "multi_step_edit": "PASS",
+  "unclear_instruction": "NEEDS_INPUT; no result published",
+  "clarification_followup": "PASS",
+  "chained_result": "PASS",
+  "column_selection": "PASS",
+  "original_unchanged": "PASS",
+  "rows_checked": 250,
+  "source_id": "bbb0d806-595a-4f23-b0ae-e0fb9946d998",
+  "result_id": "d558c957-1599-4aa5-b893-0201e0ba1396",
+  "provider": "groq"
+}

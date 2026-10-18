@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-18",
+  "automated_tests": {
+    "passed": 62,
+    "failed": 0
+  },
+  "frontend_production_build": "passed",
+  "compose_configuration": "passed",
+  "docker_stack_startup": "passed",
+  "native_http_integration": [
+    "ingest",
+    "replace",
+    "extract",
+    "normalize"
+  ],
+  "docker_http_integration": [
+    "ingest",
+    "replace",
+    "extract",
+    "normalize"
+  ],
+  "browser_checks": [
+    "demo ingestion",
+    "email replacement",
+    "result pagination"
+  ],
+  "benchmarks": [
+    "benchmark-results.json",
+    "benchmark-cluster.json"
+  ],
+  "not_verified": [
+    "live OpenAI request",
+    "separate physical hosts"
+  ],
+  "not_delivered_in_local_scope": [
+    "GitHub upload",
+    "public deployment",
+    "final cloud demo video"
+  ],
+  "groq_integration": {
+    "implementation": "complete",
+    "mocked_provider_tests": "passed",
+    "live_inference": "passed: table-aware multi-step editing, clarification and follow-up",
+    "paid_fallback": "disabled",
+    "sample_data_live_ai": "Unified conversation sends bounded table contents to configured provider"
+  },
+  "name_extraction_regression": {
+    "rows_checked": 250,
+    "correct_name_values": 250,
+    "null_names": 0,
+    "zero_match_guard": "passed",
+    "unsupported_normalization": "correctly rejected"
+  },
+  "unified_chat": {
+    "single_prompt_interface": "verified in browser",
+    "old_operation_tabs": "removed",
+    "sample_preview": "verified; up to 8 rows / 6 KB",
+    "real_provider_http_test": "passed; see chat-verification.json",
+    "browser_clarification": "NEEDS_INPUT; table unchanged",
+    "chained_edits": "passed",
+    "original_preservation": "passed"
+  },
+  "real_s3": {
+    "bucket": "regexflow-test",
+    "file": "s3-test.csv",
+    "rows": 3,
+    "columns": 3,
+    "listing": "passed",
+    "import": "passed"
+  },
+  "english_ui": {
+    "theme": "muted charcoal and sage",
+    "production_build": "passed",
+    "browser_checks": [
+      "workbench",
+      "guide",
+      "history labels",
+      "S3 modal",
+      "sample preview",
+      "existing S3 connection restored after refresh"
+    ],
+    "live_ai_replies": "English; checked four synthetic replies including clarification",
+    "http_integration": "english-chat-verification.json",
+    "historical_content": "retained in its original language"
+  }
+}

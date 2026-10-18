@@ -1,0 +1,11 @@
+.env
+.venv/
+node_modules/
+dist/
+__pycache__/
+*.pyc
+*.sqlite3
+.runtime/
+.DS_Store
+
+.env.groq.tmp

@@ -1,0 +1,15 @@
+{
+  "unified_prompt": "PASS",
+  "sample_context": "PASS",
+  "multi_step_edit": "PASS",
+  "unclear_instruction": "NEEDS_INPUT; no result published",
+  "clarification_followup": "PASS",
+  "chained_result": "PASS",
+  "column_selection": "PASS",
+  "original_unchanged": "PASS",
+  "rows_checked": 250,
+  "source_id": "eea2dff4-e562-488a-a977-286498977745",
+  "result_id": "bf56c8ad-4ed3-4ed4-8e0d-ddee1043823e",
+  "provider": "groq",
+  "english_ai_replies": "PASS: four synthetic replies checked, including clarification"
+}
